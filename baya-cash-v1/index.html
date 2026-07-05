@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#f4f2ed">
+  <title>Baya Cash</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="ambient one"></div><div class="ambient two"></div>
+  <main class="app">
+    <header class="topbar">
+      <button class="brand" data-go="home" aria-label="Ir ao início"><span class="mark"><i></i><i></i><i></i></span>Baya</button>
+      <button class="avatars" data-go="settings" aria-label="Abrir ajustes"><span id="avatar-1">Y</span><span id="avatar-2">J</span></button>
+    </header>
+
+    <section class="view active" data-view="home">
+      <div class="hero">
+        <p class="eyebrow" id="greeting">Olá, vocês dois</p>
+        <h1>Seu mês,<br>com calma.</h1>
+      </div>
+      <article class="calm-card">
+        <div><span class="pulse"></span><small>STATUS DO MÊS</small></div>
+        <h2 id="home-status">Um começo tranquilo.</h2>
+        <p id="home-status-copy">Hoje é um bom dia para registrar os movimentos.</p>
+        <div class="home-actions">
+          <button class="primary" data-go="launch">Lançar gasto</button>
+          <button class="ghost" data-go="summary">Ver resumo</button>
+        </div>
+      </article>
+      <article class="tip-card"><span>✦</span><div><small>DICA DO MÊS</small><strong id="month-tip">Comece registrando sem buscar perfeição. Consistência vale mais.</strong></div></article>
+      <section class="section">
+        <div class="section-head"><div><p>Movimentos</p><h2>Últimos registros</h2></div><button data-go="transactions">Ver todos</button></div>
+        <div id="home-transactions" class="list"></div>
+      </section>
+    </section>
+
+    <section class="view" data-view="launch">
+      <div class="page-head"><p class="eyebrow">Registro rápido</p><h1 id="launch-title">Lançar</h1><p>Menos de dez segundos. Sem burocracia.</p></div>
+      <form id="transaction-form" class="launch-form">
+        <input type="hidden" id="transaction-id">
+        <div class="segmented"><button type="button" class="active" data-entry-type="expense">Saída</button><button type="button" data-entry-type="income">Entrada</button></div>
+        <div class="big-amount"><small>R$</small><output id="amount-display">0,00</output><input type="hidden" id="amount-cents"></div>
+        <div class="keypad" aria-label="Teclado numérico">
+          <button type="button" data-key="1">1</button><button type="button" data-key="2">2</button><button type="button" data-key="3">3</button>
+          <button type="button" data-key="4">4</button><button type="button" data-key="5">5</button><button type="button" data-key="6">6</button>
+          <button type="button" data-key="7">7</button><button type="button" data-key="8">8</button><button type="button" data-key="9">9</button>
+          <button type="button" data-key="clear" class="key-sub">Limpar</button><button type="button" data-key="0">0</button><button type="button" data-key="back">⌫</button>
+        </div>
+        <label class="field"><span>Nome *</span><input id="transaction-name" autocomplete="off" placeholder="Ex.: Supermercado" required><small id="category-suggestion"></small></label>
+        <button class="details-toggle" id="details-toggle" type="button">Adicionar detalhes opcionais <span>＋</span></button>
+        <div class="optional-fields" id="optional-fields">
+          <div class="field-grid">
+            <label class="field"><span>Categoria</span><select id="transaction-category"></select></label>
+            <label class="field"><span>Quem pagou</span><select id="transaction-paid-by"></select></label>
+            <label class="field"><span>Classificação</span><select id="transaction-classification"><option>Não classificado</option><option>Essencial</option><option>Qualidade de vida</option><option>Impulso</option></select></label>
+            <label class="field"><span>Pagamento</span><select id="transaction-payment"></select></label>
+            <label class="field"><span>Data</span><input id="transaction-date" type="date"></label>
+          </div>
+          <label class="receipt-button">📷 Foto do comprovante<input id="receipt-input" type="file" accept="image/*" capture="environment"></label>
+          <span id="receipt-name" class="file-name"></span>
+        </div>
+        <button class="save" type="submit">Salvar lançamento</button>
+        <button class="repeat-button" id="repeat-last" type="button" hidden>↻ Repetir último lançamento</button>
+      </form>
+    </section>
+
+    <section class="view" data-view="transactions">
+      <div class="page-head"><p class="eyebrow">Histórico</p><h1>Movimentos</h1><p>Todos os registros, claros e editáveis.</p></div>
+      <div class="filters">
+        <input id="search-filter" type="search" placeholder="Buscar por nome">
+        <div class="filter-grid">
+          <input id="month-filter" type="month">
+          <select id="type-filter"><option value="all">Todos os tipos</option><option value="expense">Saídas</option><option value="income">Entradas</option></select>
+          <select id="category-filter"><option value="all">Todas categorias</option></select>
+        </div>
+      </div>
+      <div id="transactions-list" class="list movement-list"></div>
+    </section>
+
+    <section class="view" data-view="summary">
+      <div class="page-head summary-head"><p class="eyebrow">Visão financeira</p><div><h1>Resumo</h1><button class="eye" id="privacy-eye" aria-label="Mostrar ou ocultar valores">◉</button></div><p id="summary-period"></p></div>
+      <article class="balance-card"><small>SALDO DO MÊS</small><strong class="sensitive" id="summary-balance">R$ 0,00</strong><p id="pace-message">Vocês estão construindo uma visão mais clara.</p></article>
+      <div class="stat-grid">
+        <article><small>Entradas</small><strong class="sensitive" id="summary-income">R$ 0,00</strong></article>
+        <article><small>Saídas</small><strong class="sensitive" id="summary-expense">R$ 0,00</strong></article>
+        <article><small>Economia</small><strong class="sensitive" id="summary-savings">R$ 0,00</strong></article>
+        <article><small>Percentual</small><strong id="summary-rate">0%</strong></article>
+      </div>
+      <article class="analysis-card"><div class="section-head"><div><p>Orçamento</p><h2>Ritmo do mês</h2></div><span id="budget-percent">0%</span></div><div class="bar"><i id="budget-bar"></i></div><div class="analysis-foot"><span>Disponível</span><strong class="sensitive" id="remaining-budget">R$ 0,00</strong></div></article>
+      <div id="summary-analyses"></div>
+    </section>
+
+    <section class="view" data-view="settings">
+      <div class="page-head"><p class="eyebrow">Preferências</p><h1>Ajustes</h1><p>Deixem o Baya com a cara de vocês.</p></div>
+      <section class="settings-card">
+        <h2>O casal</h2>
+        <div class="field-grid"><label class="field"><span>Pessoa 1</span><input id="person1"></label><label class="field"><span>Pessoa 2</span><input id="person2"></label></div>
+        <div class="field-grid"><label class="field"><span>Renda prevista</span><input id="expected-income" inputmode="decimal"></label><label class="field"><span>Meta de economia</span><input id="saving-goal" inputmode="decimal"></label></div>
+        <button class="secondary" id="save-settings">Salvar preferências</button>
+      </section>
+      <section class="settings-card">
+        <h2>Privacidade</h2>
+        <button class="setting-row" id="toggle-home-values"><span><strong>Valores no início</strong><small>Mostrar valores nos últimos registros</small></span><i class="toggle"></i></button>
+        <button class="setting-row" id="toggle-privacy"><span><strong>Modo privacidade</strong><small>Ocultar números sensíveis</small></span><i class="toggle"></i></button>
+      </section>
+      <section class="settings-card">
+        <div class="section-head"><div><p>Recorrentes</p><h2>Gastos fixos</h2></div><button id="add-fixed">+ Adicionar</button></div>
+        <div id="fixed-list" class="compact-list"></div>
+      </section>
+      <section class="settings-card">
+        <h2>Organização</h2>
+        <label class="field"><span>Categorias (separadas por vírgula)</span><textarea id="categories-input"></textarea></label>
+        <label class="field"><span>Formas de pagamento</span><textarea id="payments-input"></textarea></label>
+        <label class="field"><span>Orçamento por categoria</span><div id="category-budgets"></div></label>
+        <button class="secondary" id="save-lists">Salvar listas</button>
+      </section>
+      <section class="settings-card">
+        <h2>Seus dados</h2>
+        <div class="data-actions"><button id="export-backup">Exportar backup</button><label>Importar backup<input type="file" id="import-backup" accept=".json,application/json"></label><button class="danger" id="clear-data">Limpar tudo</button></div>
+      </section>
+    </section>
+  </main>
+
+  <nav class="bottom-nav" aria-label="Navegação principal">
+    <button class="nav active" data-go="home"><span>⌂</span>Início</button>
+    <button class="nav" data-go="launch"><span>＋</span>Lançar</button>
+    <button class="nav" data-go="transactions"><span>≡</span>Movimentos</button>
+    <button class="nav" data-go="summary"><span>◫</span>Resumo</button>
+    <button class="nav" data-go="settings"><span>⚙</span>Ajustes</button>
+  </nav>
+
+  <div class="modal-backdrop" id="modal-backdrop"></div>
+  <section class="modal" id="fixed-modal" role="dialog" aria-modal="true">
+    <div class="modal-head"><div><p class="eyebrow">Gasto recorrente</p><h2 id="fixed-title">Novo gasto fixo</h2></div><button data-close-modal>×</button></div>
+    <form id="fixed-form"><input type="hidden" id="fixed-id">
+      <label class="field"><span>Nome *</span><input id="fixed-name" required></label>
+      <div class="field-grid"><label class="field"><span>Valor *</span><input id="fixed-amount" inputmode="decimal" required></label><label class="field"><span>Vencimento</span><input id="fixed-due" type="number" min="1" max="31" value="10"></label></div>
+      <div class="field-grid"><label class="field"><span>Categoria</span><select id="fixed-category"></select></label><label class="field"><span>Quem paga</span><select id="fixed-paid-by"></select></label></div>
+      <label class="check"><input id="fixed-active" type="checkbox" checked> Ativo</label>
+      <button class="save" type="submit">Salvar gasto fixo</button>
+    </form>
+  </section>
+  <section class="modal receipt-modal" id="receipt-modal"><div class="modal-head"><h2>Comprovante</h2><button data-close-modal>×</button></div><img id="receipt-preview" alt="Comprovante anexado"></section>
+  <div class="toast" id="toast"><span>✓</span><p>Pronto.</p></div>
+  <script src="./app.js" defer></script>
+</body>
+</html>
